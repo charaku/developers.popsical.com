@@ -156,6 +156,11 @@ paths:
           required: true
           description: URL parameter
           type: string
+        - name: device_id
+          in: query
+          required: false
+          description: Device id
+          type: string
       responses:
         200:
           description: Token Object. Short code to display on the TV

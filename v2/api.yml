@@ -822,6 +822,163 @@ paths:
               meta:
                 $ref: '#/definitions/Pagination'
 
+  /biz/auth/sessions.json:
+    post:
+      summary: Create new authenticated session for business application
+      description: |
+        Returns access token
+      tags:
+        - Business
+      security:
+        - OauthSecurity:
+          - business
+      parameters:
+        - name: body
+          in: body
+          required: true
+          description: 'Create new authenticated session for business application'
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: email as username
+                example: johnsnow@popsical.com
+              password:
+                type: string
+                description: password
+                example: password1234
+              client_id:
+                type: string
+                description: Your app oauth client id
+                example: 7eb4494c1eb42584b91cd81b506e4d2fd09ae75a69307c0ecc9c3f6a5a88c228
+      responses:
+        200:
+          description: Authentication Object. Access token to be used for API communication in business application
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                description: Include this in header -H Authorization Bearer access_token
+                example: e9d9054a3b303a5fdf9a175ed18d9296535ca4e34159c50edebca681b117f152
+              refresh_token:
+                type: string
+                description: Use refresh token when access_token has expired
+                example: 649f6471f13f020f7ae31a43fbf443d5d64d21fa8290f16a868f4001fb837061
+              expires_in:
+                type: string
+                description: timestamp of access token expiry
+                example: 14400
+              scope:
+                type: string
+                description: Scope allowed accessing resources
+                example: business manage
+              business_role:
+                type: string
+                description: User role in business scope
+                example: Super Admin
+
+  /biz/profiles.json:
+    get:
+      summary: Fetch business profiles (company list)
+      description: |
+        Fetch business profiles (company list) with branch profiles
+      tags:
+        - Business
+      security:
+        - OauthSecurity:
+          - business
+      responses:
+        200:
+          description: Business profiles
+          schema:
+            type: object
+            properties:
+              business_profiles:
+                type: array
+                items:
+                  $ref: '#definitions/BusinessProfile'
+              meta:
+                $ref: '#/definitions/Pagination'
+
+  /biz/branches/me.json:
+    get:
+      summary: Fetch branch profile
+      description: |
+        Fetch branch profile
+      tags:
+        - Business
+      security:
+        - OauthSecurity:
+          - business
+      responses:
+        200:
+          description: Branch profile
+          schema:
+            $ref: '#/definitions/BranchProfile'
+
+  /biz/rooms.json:
+    get:
+      summary: Fetch room profile
+      description: |
+        Fetch room profile
+      parameters:
+        - name: hashed_pin
+          in: query
+          description: Branch hashed pin
+          type: string
+          required: true
+      tags:
+        - Business
+        - Rooms
+      security:
+        - OauthSecurity:
+          - business
+      responses:
+        200:
+          description: Room profile
+          schema:
+            type: object
+            properties:
+              room_profiles:
+                type: array
+                items:
+                  $ref: '#/definitions/RoomProfile'
+              meta:
+                $ref: '#/definitions/Pagination'
+
+    post:
+      summary: Register room profile
+      description: |
+        Register room profile
+      parameters:
+        - name: body
+          in: body
+          description: Body parameter in JSON format
+          required: true
+          schema:
+            type: object
+            properties:
+              room_name:
+                type: string
+                example: Popsical HQ 01
+              short_code:
+                type: string
+                example: TSNOOD
+      tags:
+        - Business
+        - Rooms
+      security:
+        - OauthSecurity:
+          - business
+      responses:
+        200:
+          description: Room profile
+          schema:
+            $ref: '#/definitions/RoomProfile'
+
+
 definitions:
   AuthToken:
     type: object
@@ -861,6 +1018,7 @@ definitions:
         type: string
         description: Your app oauth client id
         example: 7eb7794c1eb43584b91cd81b507e4d2fd09ae75a69307c0ecc9c3f6a5a88c338
+
   AuthTokenPostFB:
     type: object
     properties:
@@ -876,6 +1034,7 @@ definitions:
       scope:
         type: string
         description: Oauth scope permission e.g public remote_mode
+
   AccessToken:
     type: object
     properties:
@@ -895,6 +1054,7 @@ definitions:
         type: string
         description: Scope allowed accessing resources
         example: public manage
+
   AccessTokenTV:
     title: AccessTokenTv
     type: object
@@ -909,6 +1069,49 @@ definitions:
             type: string
           tv_port:
             type: integer
+
+  BranchProfile:
+    type: object
+    properties:
+      name:
+        type: string
+        example: Jim Vista HQ
+      address:
+        type: string
+        example: Orchard 101
+      contact_no:
+        type: string
+        example: 88776655
+      service_type:
+        type: string
+        example: Enterprise
+      hashed_pin:
+        type: string
+        example: 3432c765756276844af7849a4aa4a8e67a53d9ff7f0573b16c26235fc156707c
+
+  BusinessProfile:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: Jim Vista
+      branch_count:
+        type: string
+        example: 1
+      status:
+        type: string
+        example: Active
+      created_at:
+        type: string
+        example: 2018-02-28T09:43:52Z
+      branch_profiles:
+        type: array
+        items:
+          $ref: '#/definitions/BranchProfile'
+
   User:
     type: object
     properties:
@@ -934,6 +1137,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Device'
+
   Genre:
     type: object
     properties:
@@ -1047,6 +1251,7 @@ definitions:
           $ref: '#/definitions/Track'
       meta:
         $ref: '#/definitions/Pagination'
+
   PlaylistPersonalTracks:
     type: object
     properties:
@@ -1077,6 +1282,40 @@ definitions:
           $ref: '#/definitions/TrackWithPlaylistTrackID'
       meta:
         $ref: '#/definitions/Pagination'
+
+  RoomProfile:
+    type: object
+    properties:
+      device_id:
+        type: string
+        description: device unique id
+        example: aae73aa5c1964c60
+      room_name:
+        type: string
+        description: room name
+        example: Popsical HQ 01
+      state:
+        type: string
+        description: room state
+        example: open
+      uuid:
+        type: string
+        descriptionn: universal unique id
+        example: 6bc1cc40-0cbc-4eb2-84cf-954f2ffdedf7
+      room_session:
+        type: object
+        properties:
+          session_start:
+            type: string
+            format: date-time
+            description: timestamp of session start in iso8601 timestamp format
+            example: '2017-11-21T08:12:33Z'
+          session_end:
+            type: string
+            format: date-time
+            description: timestamp of session start in iso8601 timestamp format
+            example: '2017-11-21T08:12:33Z'
+
   TrackWithPlaylistTrackID:
     type: object
     properties:
