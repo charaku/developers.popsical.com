@@ -2121,27 +2121,6 @@ paths:
                   "play_queue_short_code_value":"871675",
                   "play_queue_short_code_expires_at":"2018-04-24T13:40:34.441Z"},],
                 "meta":{"total":6,"current_page":1,"num_pages":1,"per_page":15,"previous":null,"next":null}}
-        401:
-          description: Not Authorize
-          schema:
-            $ref: '#/definitions/Error'
-          examples:
-            application/json:
-              {"errors": "Not Authorized", "err_code": 1401 }
-        403:
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/Error'
-          examples:
-            application/json:
-              {"errors": "Forbidden", "err_code": 1403 }
-        404:
-          description: Not found
-          schema:
-            $ref: '#/definitions/Error'
-          examples:
-            application/json:
-              {"errors": "Forbidden", "err_code": 1404 }
         422:
           description: Unprocessable Entity
           schema:
