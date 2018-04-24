@@ -2077,6 +2077,78 @@ paths:
         200:
           description: |
             Returns OK {'success': 'ok'}
+  /me/tvs.json:
+    get:
+      summary: Fetch avalable TVs in network for pairing
+      parameters:
+        - name: wifi_ssid
+          in: query
+          required: false
+          type: string
+        - name: device_uid
+          in: query
+          required: false
+          type: string
+      tags:
+        - User
+        - Auth
+      security:
+        - OauthSecurity:
+          - remote_mode
+      responses:
+        200:
+          description: List of available TVs for pairing
+          schema:
+            type: object
+            properties:
+              tvs:
+                type: array
+                items:
+                  $ref: '#/definitions/Tv'
+              meta:
+                $ref: '#/definitions/Pagination'
+          examples:
+            application/json:
+              {"tvs":
+                [{"device_uid":"3396c445b9268af3",
+                  "ip_address":"192.168.1.199",
+                  "wifi_bssid":"60:45:cb:ce:05:c4",
+                  "play_queue_short_code_value":"258722",
+                  "play_queue_short_code_expires_at":"2018-04-24T13:44:03.375Z"},
+                {"device_uid":"38661ba15ebea382",
+                  "ip_address":"192.168.1.225",
+                  "wifi_bssid":"60:45:cb:ce:05:c8",
+                  "play_queue_short_code_value":"871675",
+                  "play_queue_short_code_expires_at":"2018-04-24T13:40:34.441Z"},],
+                "meta":{"total":6,"current_page":1,"num_pages":1,"per_page":15,"previous":null,"next":null}}
+        401:
+          description: Not Authorize
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {"errors": "Not Authorized", "err_code": 1401 }
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {"errors": "Forbidden", "err_code": 1403 }
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {"errors": "Forbidden", "err_code": 1404 }
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {"errors": "wifi_ssid or tv_device_uid cannot be blank", "err_code": 1400 }
 
 definitions:
   AuthToken:
@@ -2263,6 +2335,26 @@ definitions:
       device:
         $ref: '#/definitions/Device'
 
+  Tv:
+    type: object
+    properties:
+      device_uid:
+        type: string
+        description: unique mobile device identifier
+        example: device-id
+      ip_address:
+        type: string
+        example: 192.168.1.1
+      wifi_bssid:
+        type: string
+        example: f2:b7:2a:5d:bf:1d
+      play_queue_short_code_value:
+        type: string
+        example: "258722"
+      play_queue_short_code_expires_at:
+        type: string
+        format: date-time
+        example: "2018-04-24T13:44:03.375Z"
   Playlist:
     type: object
     properties:
