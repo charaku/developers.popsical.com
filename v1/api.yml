@@ -2085,10 +2085,14 @@ paths:
           in: query
           required: false
           type: string
+          description: Wifi SSID where the remote device is connecting, case sensitive. Not to be used together with device_uid param.
+          example: "popsical"
         - name: device_uid
           in: query
           required: false
           type: string
+          description: Device UID of the remote device. Not to be used together with wifi_ssid param.
+          example: "my-popsical-tv"
       tags:
         - Auth
       security:
