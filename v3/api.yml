@@ -194,12 +194,13 @@ paths:
           schema:
             type: object
             properties:
-              playlists:
+              notifications:
                 type: array
                 items:
                   $ref: '#/definitions/Notification'
               meta:
                 $ref: '#/definitions/Pagination'
+
   /me/notifications/{id}.json:
     get:
       summary: Get Notification Object
@@ -218,9 +219,9 @@ paths:
           - remote_mode
       responses:
         200:
-          description: Object with notifications array & meta pagination information
+          description: Object notification
           schema:
-            $ref: '#/definitions/Notifcation'
+            $ref: '#/definitions/Notification'
 
 definitions:
   AuthToken:
