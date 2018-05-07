@@ -821,6 +821,41 @@ paths:
                   $ref: '#/definitions/Genre'
               meta:
                 $ref: '#/definitions/Pagination'
+  /devices.json:
+    post:
+      summary: Create Device
+      description: |
+        Store the unique deviceID from the mobile device and associate it with the user
+      tags:
+        - Device
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Device'
+      security:
+        - OauthSecurity:
+          - manage
+          - remote_mode
+      responses:
+        200:
+          description: Ok
+          examples:
+            application/json:
+              {"success": "ok"}
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorForbidden'
+        404:
+          description:  found
+          schema:
+            $ref: '#/definitions/ErrorNotFound'
+        422:
+          description: Model validation error
+          schema:
+            $ref: '#/definitions/ErrorUnprocessable'
 
   /biz/auth/sessions.json:
     post:
