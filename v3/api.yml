@@ -222,7 +222,29 @@ paths:
           description: Object notification
           schema:
             $ref: '#/definitions/Notification'
-
+  
+  /me/notifications/read/{id}.json:
+    post:
+      summary: Marks Notification Object as read
+      description: |
+        Fetch notification object
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      tags:
+        - Notification
+      security:
+        - OauthSecurity:
+          - public
+          - remote_mode
+      responses:
+        200:
+          description: Object notification
+          schema:
+            $ref: '#/definitions/Success'
+            
 definitions:
   AuthToken:
     type: object
@@ -656,6 +678,9 @@ definitions:
       link:
         type: string
         example: https://popsical.com
+      status:
+        type: string
+        example: notread
 
   PrevPlayQueueObj:
     type: object
