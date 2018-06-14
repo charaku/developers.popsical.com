@@ -1,0 +1,5 @@
+branch-defaults:
+  push-notification-sent-date-and-status-20180614:
+    environment: digimon-3
+global:
+  profile: eb-cli
