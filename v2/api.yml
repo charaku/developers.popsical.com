@@ -275,27 +275,6 @@ paths:
           schema:
             $ref: '#/definitions/Track'
 
-  /tracks/{id}.json:
-    get:
-      summary: Get Track Object
-      description: |
-        Fetch track object
-      parameters:
-        - name: id
-          in: path
-          required: true
-          type: integer
-      tags:
-        - Track
-      security:
-        - OauthSecurity:
-          - public
-      responses:
-        200:
-          description: Object with tracks array & meta pagination information
-          schema:
-            $ref: '#/definitions/Track'
-
     patch:
       summary: Patch Track Object
       description: |
@@ -1530,7 +1509,21 @@ definitions:
         example: left
       images:
         $ref: '#/definitions/Image'
+      skippable_ranges:
+        $ref: '#/definitions/SkippableRange'
 
+  SkippableRange:
+    type: object
+    properties:
+      from:
+        type: string
+        description: 'mm:ss.SSS'
+        example: '00:01.134'
+      to:
+        type: string
+        description: 'mm:ss.SSS'
+        example: '00:02.229'
+        
   Stream:
     type: object
     properties:
@@ -1829,6 +1822,7 @@ parameters:
   playlistGenreParams:
     name: genres
     in: query
+    
     description: genres e.g `pop`, `rock`, `rap`, `jazz`
     type: string
     required: false
