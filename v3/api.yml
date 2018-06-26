@@ -729,9 +729,13 @@ definitions:
       link:
         type: string
         example: 'https://popsical.com'
-      status:
+      is_read:
+        type: boolean
+        example: true
+      sent_at:
         type: string
-        example: notread
+        format: date-time
+        description: timestamp of last updated in iso8601 timestamp format
   PrevPlayQueueObj:
     type: object
     properties:
