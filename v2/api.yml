@@ -1439,6 +1439,18 @@ definitions:
       track_id:
         type: integer
         example: 130070
+      lang_code:
+        type: string
+        description: language code
+        example: en
+      language_native:
+        type: string
+        description: language name
+        example: English
+      lrc_url:
+        type: string
+        description: url of the lyric file
+        example: "https://url.com/"
       lines:
         type: array
         description: line of lyrics

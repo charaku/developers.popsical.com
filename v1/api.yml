@@ -2175,6 +2175,51 @@ paths:
             examples:
               application/json:
                 {"errors": "wifi_ssid or tv_device_uid cannot be blank", "err_code": 1400 }
+
+  /videos/lyrics/{id}.json:
+    get:
+      summary: Get Video Lyric Object
+      description: |
+        Fetch video lyric object
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: video id
+      tags:
+        - Video Lyric
+      security:
+        - OauthSecurity:
+          - public
+      responses:
+        200:
+          description: Object with video lyric information
+          schema:
+            $ref: '#/definitions/VideoLyric'
+
+  /videos/lyrics/{file_format}/{id}.json:
+    get:
+      summary: Get Video Lyric Object
+      description: |
+        Fetch video lyric object with specified file format
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: video id
+      tags:
+        - Video Lyric
+      security:
+        - OauthSecurity:
+          - public
+      responses:
+        200:
+          description: Object with video lyric information
+          schema:
+            $ref: '#/definitions/VideoLyric'
+
 definitions:
   AuthToken:
     type: object
@@ -2476,6 +2521,69 @@ definitions:
       premium:
         type: boolean
         description: indicates the track is marked as premium content
+
+  VideoLyric:
+    type: object
+    properties:
+      track_id:
+        type: integer
+        example: 130070
+      lang_code:
+        type: string
+        description: language code
+        example: en
+      language_native:
+        type: string
+        description: language name
+        example: English
+      lrc_url:
+        type: string
+        description: url of the lyric file
+        example: "https://url.com/"
+      file_format:
+        type: string
+        description: format of the lyric file
+        example: "lrc"
+      lines:
+        type: array
+        description: line of lyrics
+        example:
+          - ゴキゲンな蝶になって　きらめく風に乗って
+          - 今すぐ　キミに会いに行こう
+          - ""
+          - 何が　wow wow～
+          - この空に届くのだろう
+      alt_lines:
+        type: array
+        description: alternative line of lyrics
+        example:
+          - Gokigen na chou ni natte kirameku kaze ni notte
+          - Ima sugu kimi ni ai ni yukou
+          - ""
+          - Nani ga wow wow wow wow wow
+          - Kono sora ni todoku no darou
+      translations:
+        type: array
+        items:
+          type: object
+          properties:
+            lang_code:
+              type: string
+              description: language code
+              example: en
+            language:
+              type: string
+              description: language
+              example: English
+            lines:
+              type: array
+              description: line of lyrics
+              example:
+                - I'll become a happy butterfly and ride on the glittering wind
+                - I'll come to see you soon
+                - ""
+                - What do you mean, wow wow wow wow wow?
+                - I wonder if we'll reach the skies
 
   Image:
     type: object
