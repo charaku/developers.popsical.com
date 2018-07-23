@@ -1182,6 +1182,10 @@ definitions:
         type: string
         description: unique token related to push notification
         example: abc123
+      fcm_device_token:
+        type: string
+        description: unique token for firebase cloud messaging push notification, this will be prioritized if device is android
+        example: abc123
       ip_address:
         type: string
         example: 192.168.1.1
