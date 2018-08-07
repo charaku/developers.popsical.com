@@ -269,16 +269,22 @@ paths:
           description: Object notification
           schema:
             $ref: '#/definitions/Notification'
-  '/me/notifications/read/{id}.json':
+  '/me/notifications/read.json':
     post:
       summary: Marks Notification Object as read
       description: |
         Fetch notification object
       parameters:
-        - name: id
-          in: path
+        - name: body
+          in: body
+          description: Body parameter in JSON format
           required: true
-          type: integer
+          schema:
+            type: object
+            properties:
+              push_notification_id:
+                type: integer
+                example: 12345
       tags:
         - Notification
       security:
@@ -718,6 +724,9 @@ definitions:
       id:
         type: integer
         example: 128276
+      push_notification_id:
+        type: integer
+        example: 123
       title:
         type: string
         description: title
