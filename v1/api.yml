@@ -2187,6 +2187,11 @@ paths:
           required: true
           type: integer
           description: video id
+        - name: filter_has_embed_lyric
+          in: query
+          required: false
+          type: boolean
+          description: Set to true if don't want to return any video lyric when video already has embedded lyrics
       tags:
         - Video Lyric
       security:
@@ -2209,6 +2214,11 @@ paths:
           required: true
           type: integer
           description: video id
+        - name: filter_has_embed_lyric
+          in: query
+          required: false
+          type: boolean
+          description: Set to true if don't want to return any video lyric when video already has embedded lyrics
       tags:
         - Video Lyric
       security:
