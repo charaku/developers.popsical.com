@@ -1205,7 +1205,14 @@ definitions:
         type: string
         description: valid values e.g tv, remote
         example: tv
-
+      hardware_hash:
+        type: string
+        description: hardware hash part of user agent
+        example: abc123
+      hardware_type:
+        type: string
+        description: hardware type part of user agent
+        example: abc123
   DevicePost:
     type: object
     properties:
