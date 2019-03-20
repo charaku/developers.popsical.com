@@ -2115,14 +2115,18 @@ paths:
               {"tvs":
                 [{"device_uid":"3396c445b9268af3",
                   "ip_address":"192.168.1.199",
+                  "wifi_ssid": "random-wifi",
                   "wifi_bssid":"60:45:cb:ce:05:c4",
                   "play_queue_short_code_value":"258722",
-                  "play_queue_short_code_expires_at":"2018-04-24T13:44:03.375Z"},
+                  "play_queue_short_code_expires_at":"2018-04-24T13:44:03.375Z",
+                  "port": "8080"},
                 {"device_uid":"38661ba15ebea382",
                   "ip_address":"192.168.1.225",
+                  "wifi_ssid": "random-wifi",
                   "wifi_bssid":"60:45:cb:ce:05:c8",
                   "play_queue_short_code_value":"871675",
-                  "play_queue_short_code_expires_at":"2018-04-24T13:40:34.441Z"},],
+                  "play_queue_short_code_expires_at":"2018-04-24T13:40:34.441Z",
+                  "port": "8080"},],
                 "meta":{"total":2,"current_page":1,"num_pages":1,"per_page":15,"previous":null,"next":null}}
         422:
           description: Unprocessable Entity
