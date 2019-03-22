@@ -1910,9 +1910,9 @@ paths:
 
   /subscriptions/plan/checkout.json:
     post:
-      summary: Subscribe to Premium plan and charge payment
+      summary: Subscribe to Premium plan and charge payment, Reactivate subscription, Remove scheduled cancellation
       description: |
-        Subscribe to Premium plan and charge payment
+        Subscribe to Premium plan and charge payment, Reactivate subscription, Remove scheduled cancellation
       tags:
         - Subscription
       parameters:
@@ -1986,6 +1986,31 @@ paths:
               addon_id:
                 type: string
                 example: popsical-24-hour
+        - name: Authorization
+          in: header
+          description: |
+            Provide access_token with manage scope
+          type: string
+          required: true
+          format: string
+      responses:
+        200:
+          description: Object with subscription status information
+          schema:
+            $ref: '#/definitions/SubscriptionObj'
+        401:
+          description: User unauthorized
+          schema:
+            $ref: '#/definitions/ErrorUnauthorized'
+
+  /subscriptions/plan/cancel.json:
+    post:
+      summary: Schedule cancel premium plan
+      description: |
+        Schedule cancel premium plan
+      tags:
+        - Subscription
+      parameters:
         - name: Authorization
           in: header
           description: |
@@ -2753,12 +2778,23 @@ definitions:
       status:
         type: string
         example: "Active"
+      status_code: 
+        type: string
+        example: "premium_monthly"
       plan:
         type: string
         example: "Popsical Premium"
       premium:
         type: boolean
         example: true
+      plan_start:
+        type: string
+        format: date-time
+        example: "2018-04-24T13:44:03.375Z"
+      plan_end:
+        type: string
+        format: date-time
+        example: "2018-05-24T13:44:03.375Z"
 
   PrevPlayQueueObj:
     type: object
