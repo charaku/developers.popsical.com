@@ -2795,7 +2795,10 @@ definitions:
         type: string
         format: date-time
         example: "2018-05-24T13:44:03.375Z"
-
+      has_active_gift_card:
+        type: boolean
+        example: false
+        description: When plan is activated via gift card, plan cannot be cancelled
   PrevPlayQueueObj:
     type: object
     properties:
