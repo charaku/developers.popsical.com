@@ -222,6 +222,35 @@ paths:
                   $ref: '#/definitions/Playlist'
               meta:
                 $ref: '#/definitions/Pagination'
+  /lists/recommended.json:
+    get:
+      summary: Get User's Recommended Playlist with Tracks.
+      parameters:
+       - name: per_page
+         in: query
+         description: Number of tracks returned
+         type: integer
+       - name: page
+         in: query
+         description: Page number
+         type: integer
+      tags:
+        - Playlist
+      security:
+        - OauthSecurity:
+          - public
+      responses:
+        200:
+          description: Playlist with tracks objects that can be paginated
+          schema:
+            $ref: '#/definitions/PlaylistRecommendedTracks'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {"errors": "not_found", "err_code": 1404 }
   /me/notifications.json:
     get:
       summary: Get List of Notifications Messages
@@ -778,6 +807,86 @@ definitions:
           per_page:
             type: integer
             description: Number of items available per page
+  TrackWithPlaylistTrackID:
+    type: object
+    properties:
+      playlist_track_id:
+        type: integer
+        description: To support removal of track from playlist
+      id:
+        type: integer
+      number:
+        type: integer
+        description: track number in the album (if available)
+      title:
+        type: string
+        description: track title
+      alt_title:
+        type: string
+        description: alternate title, used for search index
+      lang_code:
+        type: string
+        description: language code of the track e.g en
+      runtime:
+        type: integer
+        description: duration in seconds
+      release_date:
+        type: string
+        format: date
+        description: track release date
+      has_video:
+        type: boolean
+        description: flag to indicate track has video
+      genres:
+        type: array
+        items:
+          type: string
+      source:
+        type: string
+        description: source of recording
+      images:
+        $ref: '#/definitions/Image'
+      lyrics_count:
+        type: integer
+      video:
+        $ref: '#/definitions/Video'
+      artists:
+        type: array
+        items:
+          $ref: '#/definitions/Artist'
+      block:
+        type: boolean
+        description: true indicates track video can't be viewed due to Rules
+  PlaylistRecommendedTracks:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: identifier of playlist. Use this id to fetch playlist object
+      profile_id:
+        type: integer
+        description: profile_id 0 means internal generated id
+      name:
+        type: string
+        description: Name of playlist
+      created_at:
+        type: string
+        format: date-time
+        description: timestamp of creation in iso8601 timestamp format
+      updated_at:
+        type: string
+        format: date-time
+        description: timestamp of last updated in iso8601 timestamp format
+      images:
+        $ref: '#/definitions/Image'
+      playlist_type:
+        type: integer
+      tracks:
+        type: array
+        items:
+          $ref: '#/definitions/TrackWithPlaylistTrackID'
+      meta:
+        $ref: '#/definitions/Pagination'
   Pagination:
     type: object
     properties:
