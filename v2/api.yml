@@ -275,27 +275,6 @@ paths:
           schema:
             $ref: '#/definitions/Track'
 
-  /tracks/{id}.json:
-    get:
-      summary: Get Track Object
-      description: |
-        Fetch track object
-      parameters:
-        - name: id
-          in: path
-          required: true
-          type: integer
-      tags:
-        - Track
-      security:
-        - OauthSecurity:
-          - public
-      responses:
-        200:
-          description: Object with tracks array & meta pagination information
-          schema:
-            $ref: '#/definitions/Track'
-
     patch:
       summary: Patch Track Object
       description: |
@@ -769,6 +748,59 @@ paths:
           examples:
             application/json:
               { "errors": "Exceeding free daily time", "err_code": 1418 }
+  /play_queue/authorize.json:
+    post:
+      summary: Authorize TV App <-> Mobile App Link
+      description: |
+        To link the remote app with the TV use the short_code returned by GET `/v2/play_queue/token.json`
+        along with other required parameters in POST body.
+
+        (Optional) Provide 'Authorization' with access_token value in header for mobile clients logged_in via facebook or email.
+        This will ensure logged_in fb user session is maintain through out session
+      tags:
+        - PlayQueue
+      parameters:
+        - name: body
+          in: body
+          required: true
+          description: ''
+          schema:
+            type: object
+            properties:
+              device_id:
+                type: string
+                description: your unique mobile device id
+                example: mobile-device-id
+              device_name:
+                type: string
+                description: your mobile device name
+                example: mobile-device-type
+              client_id:
+                type: string
+                description: OAuth client_id key
+                example: b0be862b68fbd575d9fe7e6f1c5e22747c2fc375ceb8auu6562a0f57f91ud576
+              tv_device_uid:
+                type: string
+                example: "tv-device-uid"
+        - name: Authorization
+          in: header
+          description: |
+            (Optional) Provide access_token when user logged in email/password or fb
+            to properly linked signed in user to TV app
+          type: string
+          required: false
+          format: string
+      responses:
+        200:
+          description: custom access token with tv app ip_address & port
+          schema:
+            $ref: '#/definitions/AccessTokenTV'
+        401:
+          description: Not Authorize
+          schema:
+            $ref: '#/definitions/ErrorUnauthorized'
+
+
 
   /videos/{video_id}/streams.json:
     get:
@@ -1203,6 +1235,10 @@ definitions:
         type: string
         description: unique token related to push notification
         example: abc123
+      fcm_device_token:
+        type: string
+        description: unique token for firebase cloud messaging push notification, this will be prioritized if device is android
+        example: abc123
       ip_address:
         type: string
         example: 192.168.1.1
@@ -1222,7 +1258,14 @@ definitions:
         type: string
         description: valid values e.g tv, remote
         example: tv
-
+      hardware_hash:
+        type: string
+        description: hardware hash part of user agent
+        example: abc123
+      hardware_type:
+        type: string
+        description: hardware type part of user agent
+        example: abc123
   DevicePost:
     type: object
     properties:
@@ -1456,6 +1499,18 @@ definitions:
       track_id:
         type: integer
         example: 130070
+      lang_code:
+        type: string
+        description: language code
+        example: en
+      language_native:
+        type: string
+        description: language name
+        example: English
+      lrc_url:
+        type: string
+        description: url of the lyric file
+        example: "https://url.com/"
       lines:
         type: array
         description: line of lyrics
@@ -1530,7 +1585,21 @@ definitions:
         example: left
       images:
         $ref: '#/definitions/Image'
+      skippable_ranges:
+        $ref: '#/definitions/SkippableRange'
 
+  SkippableRange:
+    type: object
+    properties:
+      from:
+        type: string
+        description: 'mm:ss.SSS'
+        example: '00:01.134'
+      to:
+        type: string
+        description: 'mm:ss.SSS'
+        example: '00:02.229'
+        
   Stream:
     type: object
     properties:
@@ -1829,6 +1898,7 @@ parameters:
   playlistGenreParams:
     name: genres
     in: query
+    
     description: genres e.g `pop`, `rock`, `rap`, `jazz`
     type: string
     required: false
