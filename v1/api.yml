@@ -2783,7 +2783,8 @@ definitions:
         example: "premium_monthly"
       plan:
         type: string
-        example: "Popsical Premium"
+        example: "popsical-premium"
+        description: Subscription plan id or addon id
       premium:
         type: boolean
         example: true
@@ -2799,6 +2800,10 @@ definitions:
         type: boolean
         example: false
         description: Whether plan can be cancelled
+      mobile_tv_enabled:
+        type: boolean
+        example: false
+        description: Whether user can play tracks on mobile tv
   PrevPlayQueueObj:
     type: object
     properties:
